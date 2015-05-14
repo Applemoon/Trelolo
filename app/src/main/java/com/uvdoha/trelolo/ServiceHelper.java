@@ -12,4 +12,18 @@ import android.os.Bundle;
 // Вызывает коллбэки (binder callback), например, Activity
 public class ServiceHelper {
 
+    private ServiceHelper instance = null;
+
+    private ServiceHelper() {
+
+    }
+
+    public ServiceHelper getInstance() {
+        if (this.instance == null) {
+            this.instance = new ServiceHelper();
+        }
+
+        return this.instance;
+    }
+
 }
