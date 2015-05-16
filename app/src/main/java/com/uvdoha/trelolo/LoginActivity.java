@@ -15,10 +15,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
+import com.uvdoha.trelolo.utils.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,9 +125,9 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
      * они будут показаны, и попытки войти не произойдет.
      */
     public void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+//        if (mAuthTask != null) {
+//            return;
+//        }
 
         // Сброс ошибок.
         mEmailView.setError(null);
@@ -163,14 +166,14 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             // Показываем вращалку прогресса и запускаем фоновую задачу, чтобы выполнить попытку
             // входа пользователя.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+//            mAuthTask = new UserLoginTask(email, password);
+//            mAuthTask.execute((Void) null);
+
         }
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Заменить на свою логику
-        return email.contains("@");
+        return email.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\\.(ru|com|net|org)");
     }
 
     private boolean isPasswordValid(String password) {

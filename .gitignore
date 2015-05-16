@@ -1,7 +1,6 @@
 .gradle
 /local.properties
 /.idea
-.DS_Store
 /app/build
 /build
 Trelolo.iml

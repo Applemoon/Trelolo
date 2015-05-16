@@ -1,45 +1,65 @@
 package com.uvdoha.trelolo.rest;
 
 
-import org.json.JSONObject;
+import android.os.Bundle;
 
+import com.uvdoha.trelolo.utils.Callback;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 // Реализует HTTP протокол
 // Готовит и отправляет HTTP запросы
 // Обрабатывает HTTP ответы
 public class RESTHandler {
 
+    static String requestURL = "https://trello.com/1/OAuthGetRequestToken";
+    static String accessURL = "https://trello.com/1/OAuthGetAccessToken";
+    static String authorizeURL = "https://trello.com/1/OAuthAuthorizeToken";
+    static String appName = "Trello OAuth Example";
+
+    static String API_KEY = "be71e8b1f723f5a966aeba9357d86e83";
+    static String API_SECRET = "800cd2b168004b2be0ac2c4d33d6a1dd73878ee299393043f6adb49cf753b40a";
+
     static String API_PREFIX = "https://api.trello.com/1/";
-    static String GET_BOARDS_URL = "/members/dmitrydorofeev/boards";
+    static String GET_BOARDS_URL = "/members/me/boards/";
     static String GET_LISTS_URL = "/members/{board}/lists";
 
-    public void getBoards(RestCallback callback) {
+    private String token;
+
+    
+    public void processRequest(Bundle data, Callback callback) {
+
+        String method = data.getString("method");
+
+        if (this.token == null) {
+            this.token = data.getString("token");
+        }
+
+        Bundle res = new Bundle();
 
         try {
-            this.urlConnectionGet(GET_BOARDS_URL);
-            callback.onSuccess();
-        }
-        catch (Exception e) {
-            callback.onFail();
-        }
+            String result = this.urlConnectionGet(API_PREFIX + method + "?key=" + API_KEY + "?token=" + this.token);
 
+
+            res.putString("result", result);
+            res.putString("error", null);
+
+            callback.success(res);
+        } catch (Exception e) {
+
+            res.putString("result", null);
+            res.putString("error", e.getMessage());
+
+            callback.fail(res);
+        }
     }
 
-    public void getLists(int boardId, RestCallback callback) {
-        try {
-            this.urlConnectionGet(GET_LISTS_URL.replace("{board}", Integer.toString(boardId)));
-        }
-        catch (Exception e) {
-            callback.onFail();
-        }
-    }
-
-    public String urlConnectionGet( String strUrl ) throws IOException {
+    public String urlConnectionGet(String strUrl) throws IOException {
         HttpURLConnection connection = null;
         String str = "";
         try {
@@ -50,7 +70,14 @@ public class RESTHandler {
             int code = connection.getResponseCode();
             if (code == 200) {
                 InputStream in = connection.getInputStream();
-                // парсим инпут стрим
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                StringBuilder buf = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buf.append(line);
+                }
+
+                str = buf.toString();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,4 +89,5 @@ public class RESTHandler {
         }
         return str;
     }
+
 }
