@@ -1,74 +1,46 @@
 package com.uvdoha.trelolo;
 
 import android.app.ListActivity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
+import com.uvdoha.trelolo.data.BoardsTable;
 import com.uvdoha.trelolo.utils.Callback;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-
-public class BoardsActivity extends ListActivity {
+public class BoardsActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    SimpleCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_boards);
 
-
-        Callback callback = new Callback() {
+        ServiceHelper.getInstance(this).getBoards(this, new Callback() {
             @Override
             public void onSuccess(Bundle data) {
 
-                String boardsString = data.getString("result", null);
-
-                List<String> values = new ArrayList<>();
-
-                if (boardsString != null) {
-                    try {
-                        JSONArray boards = new JSONArray(boardsString);
-
-                        for (int i = 0; i < boards.length(); ++i) {
-                            JSONObject board = boards.getJSONObject(i);
-
-                            values.add(board.getString("name"));
-                        }
-                    }
-                    catch (Exception e) {
-
-                    }
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(BoardsActivity.this, android.R.layout.simple_list_item_1, values);
+                String[] from = new String[] { BoardsTable.COLUMN_NAME };
+                int[] to = new int[] { android.R.id.text1 };
+                adapter = new SimpleCursorAdapter(BoardsActivity.this,
+                        android.R.layout.simple_list_item_1,
+                        null,
+                        from,
+                        to,
+                        0);
                 setListAdapter(adapter);
+                getLoaderManager().initLoader(0, null, BoardsActivity.this);
             }
 
             @Override
-            public void onFail(Bundle data) {
-
-            }
-        };
-
-        Bundle data = getIntent().getExtras();
-        String token = data.getString("token", null);
-        if (token == null) {
-            ServiceHelper.getInstance(this).getBoards(this, callback);
-        } else {
-            ServiceHelper.getInstance(this).getBoards(token, this, callback);
-        }
-
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, values);
-//        setListAdapter(adapter);
+            public void onFail(Bundle data) {}
+        });
     }
 
     @Override
@@ -76,5 +48,25 @@ public class BoardsActivity extends ListActivity {
         // TODO
         Intent i = new Intent(BoardsActivity.this, ListsActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this,
+                BoardsTable.CONTENT_URI,
+                BoardsTable.PROJECTION,
+                null,
+                null,
+                BoardsTable.DEFAULT_SORT_ORDER);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        adapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        adapter.swapCursor(null);
     }
 }
