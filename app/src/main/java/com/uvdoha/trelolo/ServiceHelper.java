@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-// Синглтон TODO
+// Синглтон
 // Проверяет, запущен ли данный метод - Map(requestID, intent)
 // Готовит интенты и посылает их Service'y (startService(intent))
 // Обрабатывает коллбэки (binder callback) Service'a
@@ -47,7 +47,6 @@ public class ServiceHelper {
 
 
     public void getBoards(Context context, Callback callback) {
-
         Bundle boardsBundle = new Bundle();
         boardsBundle.putString("method", "bundle");
 
@@ -59,8 +58,33 @@ public class ServiceHelper {
         context.startService(intent);
     }
 
-    public class ServiceBroadcastReceiver extends BroadcastReceiver {
 
+    public void getLists(Context context, Callback callback) {
+        Bundle listsBundle = new Bundle();
+        listsBundle.putString("method", "bundle");
+
+        Intent intent = new Intent(context, MyService.class);
+        intent.putExtras(listsBundle);
+
+        callbacks.push(callback);
+
+        context.startService(intent);
+    }
+
+
+    public void getCards(Context context, Callback callback) {
+        Bundle cardsBundle = new Bundle();
+        cardsBundle.putString("method", "bundle");
+
+        Intent intent = new Intent(context, MyService.class);
+        intent.putExtras(cardsBundle);
+
+        callbacks.push(callback);
+
+        context.startService(intent);
+    }
+
+    public class ServiceBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "receive");

@@ -17,6 +17,12 @@ public class ListsTable implements BaseColumns {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_BOARD_ID = "board_id";
 
+    public static final String[] PROJECTION = new String[] {
+            _ID,
+            COLUMN_NAME,
+            COLUMN_BOARD_ID
+    };
+
     public static final String CREATE_TABLE =
             "create table " + TABLE_NAME + "(" +
                     _ID + " integer primary key autoincrement, " +
