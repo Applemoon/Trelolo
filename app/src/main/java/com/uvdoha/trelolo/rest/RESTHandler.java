@@ -2,6 +2,7 @@ package com.uvdoha.trelolo.rest;
 
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.uvdoha.trelolo.utils.Callback;
 
@@ -26,8 +27,6 @@ public class RESTHandler {
     static String API_SECRET = "800cd2b168004b2be0ac2c4d33d6a1dd73878ee299393043f6adb49cf753b40a";
 
     static String API_PREFIX = "https://api.trello.com/1/";
-    static String GET_BOARDS_URL = "/members/me/boards/";
-    static String GET_LISTS_URL = "/members/{board}/lists";
 
     private String token;
 
@@ -43,7 +42,7 @@ public class RESTHandler {
         Bundle res = new Bundle();
 
         try {
-            String result = this.urlConnectionGet(API_PREFIX + method + "?key=" + API_KEY + "?token=" + this.token);
+            String result = this.urlConnectionGet(API_PREFIX + method + "?key=" + API_KEY + "&token=" + this.token);
 
 
             res.putString("result", result);
@@ -63,7 +62,7 @@ public class RESTHandler {
         HttpURLConnection connection = null;
         String str = "";
         try {
-            URL url = new URL(API_PREFIX + strUrl);
+            URL url = new URL(strUrl);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
@@ -87,6 +86,9 @@ public class RESTHandler {
                 connection.disconnect();
             }
         }
+
+        Log.i("RESULT", str);
+
         return str;
     }
 

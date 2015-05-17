@@ -6,15 +6,12 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.uvdoha.trelolo.data.BoardsTable;
-//import com.uvdoha.trelolo.data.DB;
 import com.uvdoha.trelolo.utils.Callback;
 
 
@@ -24,10 +21,11 @@ public class BoardsActivity extends ListActivity implements LoaderManager.Loader
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         ServiceHelper.getInstance(this).getBoards(this, new Callback() {
             @Override
             public void onSuccess(Bundle data) {
-                Log.d("res", data.getString("result", "sas"));
+
                 String[] from = new String[] { BoardsTable.COLUMN_NAME };
                 int[] to = new int[] { android.R.id.text1 };
                 adapter = new SimpleCursorAdapter(BoardsActivity.this,

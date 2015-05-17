@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.uvdoha.trelolo.rest.APIHelper;
 import com.uvdoha.trelolo.utils.Callback;
 
 import java.util.ArrayList;
@@ -48,7 +49,21 @@ public class ServiceHelper {
 
     public void getBoards(Context context, Callback callback) {
         Bundle boardsBundle = new Bundle();
-        boardsBundle.putString("method", "bundle");
+        boardsBundle.putString("method", APIHelper.GET_BOARDS_URL);
+
+        Intent intent = new Intent(context, MyService.class);
+        intent.putExtras(boardsBundle);
+
+        callbacks.push(callback);
+
+        context.startService(intent);
+    }
+
+    public void getBoards(String token, Context context, Callback callback) {
+
+        Bundle boardsBundle = new Bundle();
+        boardsBundle.putString("method", APIHelper.GET_BOARDS_URL);
+        boardsBundle.putString("token", token);
 
         Intent intent = new Intent(context, MyService.class);
         intent.putExtras(boardsBundle);
