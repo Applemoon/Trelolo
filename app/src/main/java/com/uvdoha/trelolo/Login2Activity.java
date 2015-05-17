@@ -78,6 +78,8 @@ public class Login2Activity extends Activity {
         {
             Log.d("Token", token);
 
+            token = token.replace("\n", "").replace(" ", "");
+
             Bundle tokenBundle = new Bundle();
             tokenBundle.putString("token", token);
 

@@ -3,13 +3,18 @@ package com.uvdoha.trelolo;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.uvdoha.trelolo.utils.Callback;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class BoardsActivity extends ListActivity {
@@ -19,13 +24,30 @@ public class BoardsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_boards);
 
-//        String[] values = new String[] { "Доска 1", "Доска 2", "Доска 3" };
 
-        ServiceHelper.getInstance(this).getBoards(this, new Callback() {
+        Callback callback = new Callback() {
             @Override
             public void onSuccess(Bundle data) {
-                Log.d("res", data.getString("result", "sas"));
-                String[] values = new String[] { "Доска 1", "Доска 2", "Доска 3" };
+
+                String boardsString = data.getString("result", null);
+
+                List<String> values = new ArrayList<>();
+
+                if (boardsString != null) {
+                    try {
+                        JSONArray boards = new JSONArray(boardsString);
+
+                        for (int i = 0; i < boards.length(); ++i) {
+                            JSONObject board = boards.getJSONObject(i);
+
+                            values.add(board.getString("name"));
+                        }
+                    }
+                    catch (Exception e) {
+
+                    }
+                }
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(BoardsActivity.this, android.R.layout.simple_list_item_1, values);
                 setListAdapter(adapter);
             }
@@ -34,9 +56,16 @@ public class BoardsActivity extends ListActivity {
             public void onFail(Bundle data) {
 
             }
-        });
+        };
 
-        // TODO
+        Bundle data = getIntent().getExtras();
+        String token = data.getString("token", null);
+        if (token == null) {
+            ServiceHelper.getInstance(this).getBoards(this, callback);
+        } else {
+            ServiceHelper.getInstance(this).getBoards(token, this, callback);
+        }
+
 
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, values);
 //        setListAdapter(adapter);
