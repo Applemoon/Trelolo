@@ -22,7 +22,9 @@ public class BoardsActivity extends ListActivity implements LoaderManager.Loader
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ServiceHelper.getInstance(this).getBoards(this, new Callback() {
+        String token = getIntent().getExtras().getString("token", null);
+
+        Callback callback = new Callback() {
             @Override
             public void onSuccess(Bundle data) {
 
@@ -40,7 +42,13 @@ public class BoardsActivity extends ListActivity implements LoaderManager.Loader
 
             @Override
             public void onFail(Bundle data) {}
-        });
+        };
+
+        if (token == null) {
+            ServiceHelper.getInstance(this).getBoards(this, callback);
+        } else {
+            ServiceHelper.getInstance(this).getBoards(token, this, callback);
+        }
     }
 
     @Override
