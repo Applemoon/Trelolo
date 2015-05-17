@@ -37,6 +37,7 @@ public class Login2Activity extends Activity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                view.loadUrl("javascript:(function() { " + "document.getElementsByClassName('deny')[0].style.display = 'none'; " + "})()");
                 showProgress(false);
                 if (url.startsWith("https://trello.com/1/token/approve")) {
                     view.setVisibility(View.INVISIBLE);

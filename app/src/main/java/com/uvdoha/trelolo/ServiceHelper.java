@@ -74,6 +74,18 @@ public class ServiceHelper {
         context.startService(intent);
     }
 
+    public void getLists(Context context, Callback callback) {
+        Bundle listsBundle = new Bundle();
+        listsBundle.putString("method", APIHelper.GET_LISTS_URL);
+
+        Intent intent = new Intent(context, MyService.class);
+        intent.putExtras(listsBundle);
+
+        callbacks.push(callback);
+
+        context.startService(intent);
+    }
+
     public class ServiceBroadcastReceiver extends BroadcastReceiver {
 
         @Override
