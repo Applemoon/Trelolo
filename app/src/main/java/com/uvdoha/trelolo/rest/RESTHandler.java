@@ -31,7 +31,7 @@ public class RESTHandler {
     private String token;
 
     
-    public void processRequest(Bundle data, Callback callback) {
+    public String processRequest(Bundle data, Callback callback) {
 
         String method = data.getString("method");
 
@@ -40,15 +40,14 @@ public class RESTHandler {
         }
 
         Bundle res = new Bundle();
-
         try {
             String result = this.urlConnectionGet(API_PREFIX + method + "?key=" + API_KEY + "&token=" + this.token);
-
 
             res.putString("result", result);
             res.putString("error", null);
 
             callback.success(res);
+            return result;
         } catch (Exception e) {
 
             res.putString("result", null);
@@ -56,6 +55,8 @@ public class RESTHandler {
 
             callback.fail(res);
         }
+
+        return "";
     }
 
     public String urlConnectionGet(String strUrl) throws IOException {

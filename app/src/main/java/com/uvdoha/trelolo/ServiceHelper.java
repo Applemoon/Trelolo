@@ -48,6 +48,7 @@ public class ServiceHelper {
 
 
     public void getBoards(Context context, Callback callback) {
+
         Bundle boardsBundle = new Bundle();
         boardsBundle.putString("method", APIHelper.GET_BOARDS_URL);
 
@@ -73,10 +74,9 @@ public class ServiceHelper {
         context.startService(intent);
     }
 
-
     public void getLists(Context context, Callback callback) {
         Bundle listsBundle = new Bundle();
-        listsBundle.putString("method", "bundle");
+        listsBundle.putString("method", APIHelper.GET_LISTS_URL);
 
         Intent intent = new Intent(context, MyService.class);
         intent.putExtras(listsBundle);
@@ -86,10 +86,9 @@ public class ServiceHelper {
         context.startService(intent);
     }
 
-
     public void getCards(Context context, Callback callback) {
         Bundle cardsBundle = new Bundle();
-        cardsBundle.putString("method", "bundle");
+        cardsBundle.putString("method", APIHelper.GET_CARDS_URL);
 
         Intent intent = new Intent(context, MyService.class);
         intent.putExtras(cardsBundle);
@@ -100,6 +99,7 @@ public class ServiceHelper {
     }
 
     public class ServiceBroadcastReceiver extends BroadcastReceiver {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "receive");

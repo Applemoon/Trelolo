@@ -23,7 +23,7 @@ public class MyService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "--starrt service--");
+        Log.d(TAG, "--start service--");
         System.out.print("loooooool");
 
         final Intent cbIntent = new Intent(ServiceHelper.RECEIVER);
