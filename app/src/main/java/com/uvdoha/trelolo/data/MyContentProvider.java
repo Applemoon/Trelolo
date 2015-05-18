@@ -38,13 +38,19 @@ public class MyContentProvider extends ContentProvider {
 
         mNotesProjectionMap = new HashMap<>();
         mNotesProjectionMap.put(BoardsTable._ID, BoardsTable._ID);
+        mNotesProjectionMap.put(BoardsTable.COLUMN_ID, BoardsTable.COLUMN_ID);
         mNotesProjectionMap.put(BoardsTable.COLUMN_NAME, BoardsTable.COLUMN_NAME);
+        mNotesProjectionMap.put(BoardsTable.COLUMN_CLOSED, BoardsTable.COLUMN_CLOSED);
 
         mNotesProjectionMap.put(ListsTable._ID, ListsTable._ID);
+        mNotesProjectionMap.put(ListsTable.COLUMN_ID, ListsTable.COLUMN_ID);
         mNotesProjectionMap.put(ListsTable.COLUMN_NAME, ListsTable.COLUMN_NAME);
+        mNotesProjectionMap.put(ListsTable.COLUMN_BOARD_ID, ListsTable.COLUMN_BOARD_ID);
 
         mNotesProjectionMap.put(CardsTable._ID, CardsTable._ID);
+        mNotesProjectionMap.put(CardsTable.COLUMN_ID, CardsTable.COLUMN_ID);
         mNotesProjectionMap.put(CardsTable.COLUMN_NAME, CardsTable.COLUMN_NAME);
+        mNotesProjectionMap.put(CardsTable.COLUMN_LIST_ID, CardsTable.COLUMN_LIST_ID);
     }
 
     @Override
@@ -60,7 +66,6 @@ public class MyContentProvider extends ContentProvider {
         switch (mUriMatcher.match(uri)) {
             case BOARDS_MAIN:
                 queryBuilder.setTables(BoardsTable.TABLE_NAME);
-                queryBuilder.setProjectionMap(mNotesProjectionMap);
                 if (TextUtils.isEmpty(sortOrder)) {
                     sortOrder = BoardsTable.DEFAULT_SORT_ORDER;
                 }
@@ -68,7 +73,6 @@ public class MyContentProvider extends ContentProvider {
 
             case BOARDS_MAIN_ID:
                 queryBuilder.setTables(BoardsTable.TABLE_NAME);
-                queryBuilder.setProjectionMap(mNotesProjectionMap);
                 queryBuilder.appendWhere(BoardsTable._ID + "=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
                         new String[]{ uri.getLastPathSegment() });
@@ -79,7 +83,6 @@ public class MyContentProvider extends ContentProvider {
 
             case LISTS_MAIN:
                 queryBuilder.setTables(ListsTable.TABLE_NAME);
-                queryBuilder.setProjectionMap(mNotesProjectionMap);
                 if (TextUtils.isEmpty(sortOrder)) {
                     sortOrder = ListsTable.DEFAULT_SORT_ORDER;
                 }
@@ -87,7 +90,6 @@ public class MyContentProvider extends ContentProvider {
 
             case LISTS_MAIN_ID:
                 queryBuilder.setTables(ListsTable.TABLE_NAME);
-                queryBuilder.setProjectionMap(mNotesProjectionMap);
                 queryBuilder.appendWhere(ListsTable._ID + "=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
                         new String[]{ uri.getLastPathSegment() });
@@ -98,7 +100,6 @@ public class MyContentProvider extends ContentProvider {
 
             case CARDS_MAIN:
                 queryBuilder.setTables(CardsTable.TABLE_NAME);
-                queryBuilder.setProjectionMap(mNotesProjectionMap);
                 if (TextUtils.isEmpty(sortOrder)) {
                     sortOrder = CardsTable.DEFAULT_SORT_ORDER;
                 }
@@ -106,7 +107,6 @@ public class MyContentProvider extends ContentProvider {
 
             case CARDS_MAIN_ID:
                 queryBuilder.setTables(CardsTable.TABLE_NAME);
-                queryBuilder.setProjectionMap(mNotesProjectionMap);
                 queryBuilder.appendWhere(CardsTable._ID + "=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
                         new String[]{ uri.getLastPathSegment() });
@@ -119,6 +119,7 @@ public class MyContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
 
+        queryBuilder.setProjectionMap(mNotesProjectionMap);
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         Cursor c = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);

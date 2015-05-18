@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseHelper.class.getName();
     public static final String DB_NAME = "trelolodb";
     public static final String AUTHORITY = "tp.uvdoha.Trelolo";
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 3;
 
     DatabaseHelper(Context context) {
         super(context, DatabaseHelper.DB_NAME, null, DatabaseHelper.DB_VERSION);
