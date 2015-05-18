@@ -14,21 +14,18 @@ public class CardsTable implements BaseColumns {
     public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + DatabaseHelper.AUTHORITY + "." + TABLE_NAME;
     public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + DatabaseHelper.AUTHORITY + "." + TABLE_NAME;
 
-    public static final String COLUMN_ID = "card_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_LIST_ID = "list_id";
 
     public static final String[] PROJECTION = new String[] {
             _ID,
-            COLUMN_ID,
             COLUMN_NAME,
             COLUMN_LIST_ID
     };
 
     public static final String CREATE_TABLE =
             "create table " + TABLE_NAME + " (" +
-                    _ID + " integer primary key autoincrement, " +
-                    COLUMN_ID + " text, " +
+                    _ID + " text primary key, " +
                     COLUMN_NAME + " text, " +
                     COLUMN_LIST_ID + " text" +
                     ");";

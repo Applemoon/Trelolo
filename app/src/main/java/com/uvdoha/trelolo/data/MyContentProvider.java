@@ -38,17 +38,14 @@ public class MyContentProvider extends ContentProvider {
 
         mNotesProjectionMap = new HashMap<>();
         mNotesProjectionMap.put(BoardsTable._ID, BoardsTable._ID);
-        mNotesProjectionMap.put(BoardsTable.COLUMN_ID, BoardsTable.COLUMN_ID);
         mNotesProjectionMap.put(BoardsTable.COLUMN_NAME, BoardsTable.COLUMN_NAME);
         mNotesProjectionMap.put(BoardsTable.COLUMN_CLOSED, BoardsTable.COLUMN_CLOSED);
 
         mNotesProjectionMap.put(ListsTable._ID, ListsTable._ID);
-        mNotesProjectionMap.put(ListsTable.COLUMN_ID, ListsTable.COLUMN_ID);
         mNotesProjectionMap.put(ListsTable.COLUMN_NAME, ListsTable.COLUMN_NAME);
         mNotesProjectionMap.put(ListsTable.COLUMN_BOARD_ID, ListsTable.COLUMN_BOARD_ID);
 
         mNotesProjectionMap.put(CardsTable._ID, CardsTable._ID);
-        mNotesProjectionMap.put(CardsTable.COLUMN_ID, CardsTable.COLUMN_ID);
         mNotesProjectionMap.put(CardsTable.COLUMN_NAME, CardsTable.COLUMN_NAME);
         mNotesProjectionMap.put(CardsTable.COLUMN_LIST_ID, CardsTable.COLUMN_LIST_ID);
     }
@@ -168,15 +165,11 @@ public class MyContentProvider extends ContentProvider {
             case BOARDS_MAIN:
                 if (!values.containsKey(BoardsTable.COLUMN_NAME)) {
                     throw new IllegalArgumentException("No " + BoardsTable.COLUMN_NAME + " key");
-                } else if (!values.containsKey(BoardsTable.COLUMN_ID)) {
-                    throw new IllegalArgumentException("No " + BoardsTable.COLUMN_ID + " key");
                 }
                 break;
             case LISTS_MAIN:
                 if (!values.containsKey(ListsTable.COLUMN_NAME)) {
                     throw new IllegalArgumentException("No " + ListsTable.COLUMN_NAME + " key");
-                } else if (!values.containsKey(ListsTable.COLUMN_ID)) {
-                    throw new IllegalArgumentException("No " + ListsTable.COLUMN_ID + " key");
                 } else if (!values.containsKey(ListsTable.COLUMN_BOARD_ID)) {
                     throw new IllegalArgumentException("No " + ListsTable.COLUMN_BOARD_ID + " key");
                 }
@@ -184,8 +177,6 @@ public class MyContentProvider extends ContentProvider {
             case CARDS_MAIN:
                 if (!values.containsKey(CardsTable.COLUMN_NAME)) {
                     throw new IllegalArgumentException("No " + CardsTable.COLUMN_NAME + " key");
-                } else if (!values.containsKey(CardsTable.COLUMN_ID)) {
-                    throw new IllegalArgumentException("No " + CardsTable.COLUMN_ID + " key");
                 } else if (!values.containsKey(CardsTable.COLUMN_LIST_ID)) {
                     throw new IllegalArgumentException("No " + CardsTable.COLUMN_LIST_ID + " key");
                 }

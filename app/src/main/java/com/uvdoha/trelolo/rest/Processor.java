@@ -60,7 +60,7 @@ public class Processor {
                 final Boolean closed = boardJsonObj.getBoolean("closed");
 
                 ContentValues cv = new ContentValues();
-                cv.put(BoardsTable.COLUMN_ID, id);
+                cv.put(BoardsTable._ID, id);
                 cv.put(BoardsTable.COLUMN_NAME, name);
                 cv.put(BoardsTable.COLUMN_CLOSED, closed ? 1 : 0);
                 Uri newUri = contentResolver.insert(BoardsTable.CONTENT_URI, cv);
