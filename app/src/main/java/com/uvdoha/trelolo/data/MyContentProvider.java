@@ -162,43 +162,72 @@ public class MyContentProvider extends ContentProvider {
             values = new ContentValues();
         }
 
-        if (!values.containsKey(BoardsTable.COLUMN_NAME)) {
-            values.put(BoardsTable.COLUMN_NAME, "");
-        }
-
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-
-        long rowId;
+        // Проверка обязательных полей
         switch (mUriMatcher.match(uri)) {
             case BOARDS_MAIN:
-                rowId = db.insert(BoardsTable.TABLE_NAME, null, values);
+                if (!values.containsKey(BoardsTable.COLUMN_NAME)) {
+                    throw new IllegalArgumentException("No " + BoardsTable.COLUMN_NAME + " key");
+                } else if (!values.containsKey(BoardsTable.COLUMN_ID)) {
+                    throw new IllegalArgumentException("No " + BoardsTable.COLUMN_ID + " key");
+                }
                 break;
             case LISTS_MAIN:
-                rowId = db.insert(ListsTable.TABLE_NAME, null, values);
+                if (!values.containsKey(ListsTable.COLUMN_NAME)) {
+                    throw new IllegalArgumentException("No " + ListsTable.COLUMN_NAME + " key");
+                } else if (!values.containsKey(ListsTable.COLUMN_ID)) {
+                    throw new IllegalArgumentException("No " + ListsTable.COLUMN_ID + " key");
+                } else if (!values.containsKey(ListsTable.COLUMN_BOARD_ID)) {
+                    throw new IllegalArgumentException("No " + ListsTable.COLUMN_BOARD_ID + " key");
+                }
                 break;
             case CARDS_MAIN:
-                rowId = db.insert(CardsTable.TABLE_NAME, null, values);
+                if (!values.containsKey(CardsTable.COLUMN_NAME)) {
+                    throw new IllegalArgumentException("No " + CardsTable.COLUMN_NAME + " key");
+                } else if (!values.containsKey(CardsTable.COLUMN_ID)) {
+                    throw new IllegalArgumentException("No " + CardsTable.COLUMN_ID + " key");
+                } else if (!values.containsKey(CardsTable.COLUMN_LIST_ID)) {
+                    throw new IllegalArgumentException("No " + CardsTable.COLUMN_LIST_ID + " key");
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
 
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        String tableName;
+        switch (mUriMatcher.match(uri)) {
+            case BOARDS_MAIN:
+                tableName = BoardsTable.TABLE_NAME;
+                break;
+            case LISTS_MAIN:
+                tableName = ListsTable.TABLE_NAME;
+                break;
+            case CARDS_MAIN:
+                tableName = CardsTable.TABLE_NAME;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        final long rowId = db.insert(tableName, null, values);
+
         // If the insert succeeded, the row ID exists.
         if (rowId > 0) {
-            Uri noteUri;
+            Uri contentIdUri;
             switch (mUriMatcher.match(uri)) {
                 case BOARDS_MAIN:
-                    noteUri = ContentUris.withAppendedId(BoardsTable.CONTENT_ID_URI_BASE, rowId);
+                    contentIdUri = BoardsTable.CONTENT_ID_URI_BASE;
                     break;
                 case LISTS_MAIN:
-                    noteUri = ContentUris.withAppendedId(ListsTable.CONTENT_ID_URI_BASE, rowId);
+                    contentIdUri = ListsTable.CONTENT_ID_URI_BASE;
                     break;
                 case CARDS_MAIN:
-                    noteUri = ContentUris.withAppendedId(CardsTable.CONTENT_ID_URI_BASE, rowId);
+                    contentIdUri = CardsTable.CONTENT_ID_URI_BASE;
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown URI " + uri);
             }
+            final Uri noteUri = ContentUris.withAppendedId(contentIdUri, rowId);
             getContext().getContentResolver().notifyChange(noteUri, null);
             return noteUri;
         }

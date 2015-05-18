@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseHelper.class.getName();
     public static final String DB_NAME = "trelolodb";
     public static final String AUTHORITY = "tp.uvdoha.Trelolo";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
 
     DatabaseHelper(Context context) {
         super(context, DatabaseHelper.DB_NAME, null, DatabaseHelper.DB_VERSION);
@@ -25,11 +25,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CardsTable.CREATE_TABLE);
 
         // TODO временно, убрать
-        ContentValues cv = new ContentValues();
-        for (int i = 1; i < 3; i++) {
-            cv.put(BoardsTable.COLUMN_NAME, "Доска " + i);
-            db.insert(BoardsTable.TABLE_NAME, null, cv);
-        }
+//        ContentValues cv = new ContentValues();
+//        for (int i = 1; i < 3; i++) {
+//            cv.put(BoardsTable.COLUMN_ID, i);
+//            cv.put(BoardsTable.COLUMN_NAME, "Доска " + i);
+//            cv.put(BoardsTable.COLUMN_CLOSED, 0);
+//            db.insert(BoardsTable.TABLE_NAME, null, cv);
+//        }
 
 //        cv = new ContentValues();
 //        for (int i = 1; i < 4; i++) {

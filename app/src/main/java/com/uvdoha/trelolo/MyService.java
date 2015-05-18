@@ -28,7 +28,7 @@ public class MyService extends IntentService {
 
         final Intent cbIntent = new Intent(ServiceHelper.RECEIVER);
 
-        Processor processor = new Processor();
+        Processor processor = new Processor(getContentResolver());
 
         processor.request(intent, new Callback() {
             @Override
@@ -46,7 +46,4 @@ public class MyService extends IntentService {
         });
 
     }
-
-
-
 }
