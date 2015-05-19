@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="red" type="color">#FF0000</item>
+    <item name="green" type="color">#00FF00</item>
+    <item name="blue" type="color">#0000FF</item>
+    <item name="black" type="color">#000000</item>
+    <item name="white" type="color">#FFFFFF</item>
+    <item name="gray" type="color">#9E9E9E</item>
+
+    <item name="main_bg" type="color">#EEEEEE</item>
+    <item name="item_bg" type="color">#FAFAFA</item>
+    <item name="action_bar_bg" type="color">#3F51B5</item>
+
+    <item name="nav_drawer" type="color">#F5F5F5</item>
+    <item name="nav_drawer_item_normal" type="color">#BDBDBD</item>
+    <item name="nav_drawer_item_pressed" type="color">#757575</item>
+
+    <item name="primary_text" type="color">#212121</item>
+    <item name="secondary_text" type="color">#727272</item>
+    <item name="divider_color" type="color">#B6B6B6</item>
+    <item name="accent_color" type="color">#536DFE</item>
+
+</resources>
