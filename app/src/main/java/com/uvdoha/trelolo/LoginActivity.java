@@ -28,6 +28,7 @@ public class LoginActivity extends Activity {
 
         WebView view = (WebView) findViewById(R.id.webView);
         view.requestFocus(View.FOCUS_DOWN);
+        view.setVisibility(View.INVISIBLE);
         view.getSettings().setJavaScriptEnabled(true);
         view.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
 
@@ -39,6 +40,7 @@ public class LoginActivity extends Activity {
             public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function() { " + "document.getElementsByClassName('deny')[0].style.display = 'none'; " + "})()");
                 showProgress(false);
+                view.setVisibility(View.VISIBLE);
                 if (url.startsWith("https://trello.com/1/token/approve")) {
                     view.setVisibility(View.INVISIBLE);
                     view.loadUrl("javascript:window.HTMLOUT.processHTML(document.getElementsByTagName('pre')[0].innerText);");
@@ -51,9 +53,6 @@ public class LoginActivity extends Activity {
     }
 
     public void showProgress(final boolean show) {
-        // В Honeycomb MR2 у нас есть API ViewPropertyAnimator, который позволяет делать
-        // очень простую анимацию. Если доступно, используем этот API для затухания
-        // вращалки диалога.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -66,7 +65,6 @@ public class LoginActivity extends Activity {
                 }
             });
         } else {
-            // Если API ViewPropertyAnimator недоступен, просто показываем и прячем нужные компоненты.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
