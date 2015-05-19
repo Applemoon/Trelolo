@@ -4,10 +4,12 @@ package com.uvdoha.trelolo.rest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.internal.cu;
 import com.uvdoha.trelolo.data.BoardsTable;
 import com.uvdoha.trelolo.data.ListsTable;
 import com.uvdoha.trelolo.utils.Callback;
@@ -15,6 +17,9 @@ import com.uvdoha.trelolo.utils.Callback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // Зеркалирует состояние данных на сервере в данные на устройстве
 // Обновляет данные в БД, ставит им статус операции
@@ -55,16 +60,21 @@ public class Processor {
             JSONArray boardsArrayJsonObj = new JSONArray(resultJson);
             for (int i = 0; i < boardsArrayJsonObj.length(); i++) {
                 JSONObject boardJsonObj = boardsArrayJsonObj.getJSONObject(i);
-                final String id = boardJsonObj.getString("id");
-                final String name = boardJsonObj.getString("name");
-                final Boolean closed = boardJsonObj.getBoolean("closed");
+                final String newId = boardJsonObj.getString("id");
+                final String newName = boardJsonObj.getString("name");
+                final Boolean newClosed = boardJsonObj.getBoolean("closed");
 
                 ContentValues cv = new ContentValues();
-                cv.put(BoardsTable._ID, id);
-                cv.put(BoardsTable.COLUMN_NAME, name);
-                cv.put(BoardsTable.COLUMN_CLOSED, closed ? 1 : 0);
-                Uri newUri = contentResolver.insert(BoardsTable.CONTENT_URI, cv);
-                Log.d(TAG, "insert, result Uri : " + newUri.toString());
+                cv.put(BoardsTable._ID, newId);
+                cv.put(BoardsTable.COLUMN_NAME, newName);
+                cv.put(BoardsTable.COLUMN_CLOSED, newClosed ? 1 : 0);
+//                Uri newUri = contentResolver.insert(BoardsTable.CONTENT_URI, cv);
+//                Log.d(TAG, "insert, result Uri : " + newUri.toString());
+
+                contentResolver.update(BoardsTable.CONTENT_URI,
+                        cv,
+                        BoardsTable._ID + " ='" + newId + "'",
+                        null);
             }
         } catch (JSONException e) {
             e.printStackTrace();
