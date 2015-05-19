@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import com.uvdoha.trelolo.data.BoardsTable;
 import com.uvdoha.trelolo.utils.Callback;
@@ -32,8 +33,8 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
 
         ListView listView = (ListView) findViewById(R.id.list_view);
 
-        String[] from = new String[] { BoardsTable.COLUMN_NAME };
-        int[] to = new int[] { R.id.board_title };
+        String[] from = new String[] { BoardsTable.COLUMN_NAME, BoardsTable._ID };
+        int[] to = new int[] { R.id.board_title, R.id.board_id };
         adapter = new SimpleCursorAdapter(BoardsActivity.this,
                 R.layout.board_item,
                 null,
@@ -46,7 +47,13 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                TextView idView = (TextView) view.findViewById(R.id.board_id);
+
                 Intent i = new Intent(BoardsActivity.this, ListsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", idView.getText().toString());
+                i.putExtras(bundle);
                 startActivity(i);
             }
         });
