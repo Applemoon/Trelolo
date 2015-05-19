@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import java.util.HashMap;
 
 public class MyContentProvider extends ContentProvider {
+    public static final String AUTHORITY = "tp.uvdoha.Trelolo";
     private final UriMatcher mUriMatcher;
     private final HashMap<String, String> mNotesProjectionMap;
     private DatabaseHelper mOpenHelper;
@@ -27,14 +28,14 @@ public class MyContentProvider extends ContentProvider {
 
     public MyContentProvider() {
         mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        mUriMatcher.addURI(DatabaseHelper.AUTHORITY, BoardsTable.TABLE_NAME, BOARDS_MAIN);
-        mUriMatcher.addURI(DatabaseHelper.AUTHORITY, BoardsTable.TABLE_NAME + "/#", BOARDS_MAIN_ID);
+        mUriMatcher.addURI(AUTHORITY, BoardsTable.TABLE_NAME, BOARDS_MAIN);
+        mUriMatcher.addURI(AUTHORITY, BoardsTable.TABLE_NAME + "/#", BOARDS_MAIN_ID);
 
-        mUriMatcher.addURI(DatabaseHelper.AUTHORITY, ListsTable.TABLE_NAME, LISTS_MAIN);
-        mUriMatcher.addURI(DatabaseHelper.AUTHORITY, ListsTable.TABLE_NAME + "/#", LISTS_MAIN_ID);
+        mUriMatcher.addURI(AUTHORITY, ListsTable.TABLE_NAME, LISTS_MAIN);
+        mUriMatcher.addURI(AUTHORITY, ListsTable.TABLE_NAME + "/#", LISTS_MAIN_ID);
 
-        mUriMatcher.addURI(DatabaseHelper.AUTHORITY, CardsTable.TABLE_NAME, CARDS_MAIN);
-        mUriMatcher.addURI(DatabaseHelper.AUTHORITY, CardsTable.TABLE_NAME + "/#", CARDS_MAIN_ID);
+        mUriMatcher.addURI(AUTHORITY, CardsTable.TABLE_NAME, CARDS_MAIN);
+        mUriMatcher.addURI(AUTHORITY, CardsTable.TABLE_NAME + "/#", CARDS_MAIN_ID);
 
         mNotesProjectionMap = new HashMap<>();
         mNotesProjectionMap.put(BoardsTable._ID, BoardsTable._ID);
@@ -44,10 +45,13 @@ public class MyContentProvider extends ContentProvider {
         mNotesProjectionMap.put(ListsTable._ID, ListsTable._ID);
         mNotesProjectionMap.put(ListsTable.COLUMN_NAME, ListsTable.COLUMN_NAME);
         mNotesProjectionMap.put(ListsTable.COLUMN_BOARD_ID, ListsTable.COLUMN_BOARD_ID);
+        mNotesProjectionMap.put(ListsTable.COLUMN_CLOSED, ListsTable.COLUMN_CLOSED);
 
         mNotesProjectionMap.put(CardsTable._ID, CardsTable._ID);
         mNotesProjectionMap.put(CardsTable.COLUMN_NAME, CardsTable.COLUMN_NAME);
         mNotesProjectionMap.put(CardsTable.COLUMN_LIST_ID, CardsTable.COLUMN_LIST_ID);
+        mNotesProjectionMap.put(CardsTable.COLUMN_DESCRIPTION, CardsTable.COLUMN_DESCRIPTION);
+        mNotesProjectionMap.put(CardsTable.COLUMN_CLOSED, CardsTable.COLUMN_CLOSED);
     }
 
     @Override

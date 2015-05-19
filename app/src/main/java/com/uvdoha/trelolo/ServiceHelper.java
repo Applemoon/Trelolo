@@ -48,53 +48,40 @@ public class ServiceHelper {
 
 
     public void getBoards(Context context, Callback callback) {
-
         Bundle boardsBundle = new Bundle();
         boardsBundle.putString("method", APIHelper.GET_BOARDS_URL);
 
-        Intent intent = new Intent(context, MyService.class);
-        intent.putExtras(boardsBundle);
-
-        callbacks.push(callback);
-
-        context.startService(intent);
+        startService(context, callback, boardsBundle);
     }
 
     public void getBoards(String token, Context context, Callback callback) {
-
         Bundle boardsBundle = new Bundle();
         boardsBundle.putString("method", APIHelper.GET_BOARDS_URL);
         boardsBundle.putString("token", token);
 
-        Intent intent = new Intent(context, MyService.class);
-        intent.putExtras(boardsBundle);
-
-        callbacks.push(callback);
-
-        context.startService(intent);
+        startService(context, callback, boardsBundle);
     }
 
-    public void getLists(Context context, Callback callback) {
+    public void getLists(Context context, Callback callback, String boardId) {
         Bundle listsBundle = new Bundle();
-        listsBundle.putString("method", APIHelper.GET_LISTS_URL);
+        final String method = String.format(APIHelper.GET_LISTS_URL, boardId);
+        listsBundle.putString("method", method);
 
-        Intent intent = new Intent(context, MyService.class);
-        intent.putExtras(listsBundle);
-
-        callbacks.push(callback);
-
-        context.startService(intent);
+        startService(context, callback, listsBundle);
     }
 
-    public void getCards(Context context, Callback callback) {
+    public void getCards(Context context, Callback callback, String listId) {
         Bundle cardsBundle = new Bundle();
-        cardsBundle.putString("method", APIHelper.GET_CARDS_URL);
+        final String method = String.format(APIHelper.GET_CARDS_URL, listId);
+        cardsBundle.putString("method", method);
 
+        startService(context, callback, cardsBundle);
+    }
+
+    private void startService(Context context, Callback callback, Bundle bundle) {
         Intent intent = new Intent(context, MyService.class);
-        intent.putExtras(cardsBundle);
-
+        intent.putExtras(bundle);
         callbacks.push(callback);
-
         context.startService(intent);
     }
 

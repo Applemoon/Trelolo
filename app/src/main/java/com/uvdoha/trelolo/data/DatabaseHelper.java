@@ -10,8 +10,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseHelper.class.getName();
     public static final String DB_NAME = "trelolodb";
-    public static final String AUTHORITY = "tp.uvdoha.Trelolo";
-    public static final int DB_VERSION = 4;
+    public static final int DB_VERSION = 5;
 
     DatabaseHelper(Context context) {
         super(context, DatabaseHelper.DB_NAME, null, DatabaseHelper.DB_VERSION);
