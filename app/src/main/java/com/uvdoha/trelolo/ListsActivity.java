@@ -28,49 +28,51 @@ public class ListsActivity extends Activity implements LoaderManager.LoaderCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_layout);
 
-        board_id = getIntent().getStringExtra("board_id");
-        ListView listView = (ListView) findViewById(R.id.list_view);
-        String[] from = new String[]{ListsTable.COLUMN_NAME, ListsTable._ID};
-        int[] to = new int[]{R.id.list_title, R.id.list_id};
-        adapter = new SimpleCursorAdapter(this,
-                R.layout.list_item,
-                null,
-                from,
-                to,
-                0);
-        listView.setAdapter(adapter);
-        getLoaderManager().initLoader(0, null, this);
+        if (getIntent() != null) {
+            board_id = getIntent().getStringExtra("board_id");
+            ListView listView = (ListView) findViewById(R.id.list_view);
+            String[] from = new String[]{ListsTable.COLUMN_NAME, ListsTable._ID};
+            int[] to = new int[]{R.id.list_title, R.id.list_id};
+            adapter = new SimpleCursorAdapter(this,
+                    R.layout.list_item,
+                    null,
+                    from,
+                    to,
+                    0);
+            listView.setAdapter(adapter);
+            getLoaderManager().initLoader(0, null, this);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TextView idView = (TextView) view.findViewById(R.id.list_id);
+                    TextView idView = (TextView) view.findViewById(R.id.list_id);
 
-                Intent i = new Intent(ListsActivity.this, CardsActivity.class);
-                i.putExtra("list_id", idView.getText().toString());
-                startActivity(i);
+                    Intent i = new Intent(ListsActivity.this, CardsActivity.class);
+                    i.putExtra("list_id", idView.getText().toString());
+                    startActivity(i);
+                }
+            });
+
+            Callback callback = new Callback() {
+                @Override
+                public void onSuccess(Bundle data) {
+                    Toast.makeText(ListsActivity.this,
+                            R.string.success_lists_download,
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFail(Bundle data) {
+                    Toast.makeText(ListsActivity.this,
+                            R.string.fail_lists_download,
+                            Toast.LENGTH_SHORT).show();
+                }
+            };
+
+            if (savedInstanceState == null) {
+                ServiceHelper.getInstance(this).getLists(this, board_id, callback);
             }
-        });
-
-        Callback callback = new Callback() {
-            @Override
-            public void onSuccess(Bundle data) {
-                Toast.makeText(ListsActivity.this,
-                        R.string.success_lists_download,
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFail(Bundle data) {
-                Toast.makeText(ListsActivity.this,
-                        R.string.fail_lists_download,
-                        Toast.LENGTH_SHORT).show();
-            }
-        };
-
-        if (savedInstanceState == null) {
-            ServiceHelper.getInstance(this).getLists(this, board_id, callback);
         }
     }
 

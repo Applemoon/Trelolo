@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.uvdoha.trelolo.rest.APIHelper;
@@ -21,21 +23,15 @@ import java.util.Stack;
 // Вызывает коллбэки (binder callback), например, Activity
 public class ServiceHelper {
 
+    public static final int RESULT_OK = 0;
+    public static final int RESULT_FAIL = -1;
+
     private static ServiceHelper instance = null;
     public SharedPreferences prefs;
 
-    public static final String TAG = ServiceHelper.class.getName();
-    public static final String RECEIVER = ServiceBroadcastReceiver.class.getName();
-
-    private ServiceBroadcastReceiver receiver;
-
     Stack<Callback> callbacks = new Stack<>();
 
-    private ServiceHelper(Context context) {
-        IntentFilter filter = new IntentFilter(RECEIVER);
-        receiver = new ServiceBroadcastReceiver();
-        context.registerReceiver(receiver, filter);
-    }
+    private ServiceHelper(Context context) {}
 
     public static ServiceHelper getInstance(Context context) {
         if (instance == null) {
@@ -53,6 +49,7 @@ public class ServiceHelper {
         boardsBundle.putString("method", APIHelper.GET_BOARDS_URL);
 
         Intent intent = new Intent(context, MyService.class);
+        intent.putExtra("receiver", new MyResultReceiver());
         intent.putExtras(boardsBundle);
 
         callbacks.push(callback);
@@ -65,6 +62,7 @@ public class ServiceHelper {
         listsBundle.putString("method", APIHelper.GET_LISTS_URL.replace("[0-9a-zA-Z]+", board_id));
 
         Intent intent = new Intent(context, MyService.class);
+        intent.putExtra("receiver", new MyResultReceiver());
         intent.putExtras(listsBundle);
 
         callbacks.push(callback);
@@ -77,6 +75,7 @@ public class ServiceHelper {
         cardsBundle.putString("method", APIHelper.GET_CARDS_URL.replace("[0-9a-zA-Z]+", list_id));
 
         Intent intent = new Intent(context, MyService.class);
+        intent.putExtra("receiver", new MyResultReceiver());
         intent.putExtras(cardsBundle);
 
         callbacks.push(callback);
@@ -84,14 +83,21 @@ public class ServiceHelper {
         context.startService(intent);
     }
 
-    public class ServiceBroadcastReceiver extends BroadcastReceiver {
+    private class MyResultReceiver extends ResultReceiver {
+
+        public MyResultReceiver() {
+            super(new Handler());
+        }
 
         @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "receive");
-            callbacks.pop().success(intent.getExtras());
-
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            if (resultCode == RESULT_OK) {
+                callbacks.pop().success(resultData);
+            }
+            else if (resultCode == RESULT_FAIL) {
+                callbacks.pop().fail(resultData);
+            }
+            super.onReceiveResult(resultCode, resultData);
         }
     }
-
 }
