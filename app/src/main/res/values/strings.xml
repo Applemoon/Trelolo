@@ -2,4 +2,10 @@
     <string name="app_name">Trelolo</string>
 
     <string name="action_settings">Settings</string>
+
+    <string-array name="nav_drawer_items">
+        <item>Доски</item>
+        <item>Супердоски</item>
+        <item>Выйти</item>
+    </string-array>
 </resources>

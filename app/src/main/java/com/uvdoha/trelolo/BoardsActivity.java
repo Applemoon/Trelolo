@@ -1,13 +1,13 @@
 package com.uvdoha.trelolo;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,11 +15,19 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.uvdoha.trelolo.data.BoardsTable;
+import com.uvdoha.trelolo.navigation.DrawerItem;
+import com.uvdoha.trelolo.navigation.DrawerListAdapter;
 import com.uvdoha.trelolo.utils.Callback;
+
+import java.util.ArrayList;
 
 
 public class BoardsActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
     SimpleCursorAdapter adapter;
+    private ArrayList<DrawerItem> drawerItems;
+    private DrawerListAdapter navDrawerListAdapter;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +35,18 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
 
         setContentView(R.layout.list_layout);
 
+        initNavigationDrawer();
 
-
-        String token = getIntent().getExtras().getString("token", null);
+// тута бутер будет
+//        findViewById(R.id.ic_drawer).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mDrawerLayout.isDrawerOpen(mDrawerList))
+//                    mDrawerLayout.closeDrawer(mDrawerList);
+//                else
+//                    mDrawerLayout.openDrawer(mDrawerList);
+//            }
+//        });
 
         ListView listView = (ListView) findViewById(R.id.list_view);
 
@@ -69,11 +86,7 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
             public void onFail(Bundle data) {}
         };
 
-        if (token == null) {
-            ServiceHelper.getInstance(this).getBoards(this, callback);
-        } else {
-            ServiceHelper.getInstance(this).getBoards(token, this, callback);
-        }
+        ServiceHelper.getInstance(this).getBoards(this, callback);
     }
 
 
@@ -95,5 +108,37 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
+    }
+
+    private class SlideMenuClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            // display view for selected nav drawer item
+        }
+    }
+
+    private ArrayList<DrawerItem> getNavDrawerItems() {
+        String[] navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
+
+        ArrayList<DrawerItem> itemsList = new ArrayList<>();
+        for (int i = 0; i < navMenuTitles.length; ++i)
+            itemsList.add(new DrawerItem(navMenuTitles[i]));
+
+        return itemsList;
+    }
+
+    private void initNavigationDrawer() {
+        // load slide menu items
+        drawerItems = getNavDrawerItems();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
+        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+
+        // load slide menu items
+        drawerItems = getNavDrawerItems();
+
+        // setting the nav drawer list adapter
+        navDrawerListAdapter = new DrawerListAdapter(getApplicationContext(), drawerItems);
+        mDrawerList.setAdapter(navDrawerListAdapter);
     }
 }

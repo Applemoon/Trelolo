@@ -24,11 +24,10 @@ public class MyService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "--start service--");
-        System.out.print("loooooool");
 
         final Intent cbIntent = new Intent(ServiceHelper.RECEIVER);
 
-        Processor processor = new Processor(getContentResolver());
+        Processor processor = new Processor(this, getContentResolver());
 
         processor.request(intent, new Callback() {
             @Override
