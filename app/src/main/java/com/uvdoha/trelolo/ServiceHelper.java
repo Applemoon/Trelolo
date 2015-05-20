@@ -63,9 +63,10 @@ public class ServiceHelper {
         context.startService(intent);
     }
 
-    public void getLists(Context context, String id, Callback callback) {
+    public void getLists(Context context, String board_id, Callback callback) {
         Bundle listsBundle = new Bundle();
-        listsBundle.putString("method", APIHelper.GET_LISTS_URL.replace("[0-9a-zA-Z]+", id));
+        listsBundle.putString("method", APIHelper.GET_LISTS_URL.replace("[0-9a-zA-Z]+", board_id));
+
         Intent intent = new Intent(context, MyService.class);
         intent.putExtras(listsBundle);
 
@@ -74,9 +75,9 @@ public class ServiceHelper {
         context.startService(intent);
     }
 
-    public void getCards(Context context, Callback callback) {
+    public void getCards(Context context, String list_id, Callback callback) {
         Bundle cardsBundle = new Bundle();
-        cardsBundle.putString("method", APIHelper.GET_CARDS_URL);
+        cardsBundle.putString("method", APIHelper.GET_CARDS_URL.replace("[0-9a-zA-Z]+", list_id));
 
         Intent intent = new Intent(context, MyService.class);
         intent.putExtras(cardsBundle);

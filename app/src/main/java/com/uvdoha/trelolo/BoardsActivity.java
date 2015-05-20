@@ -2,12 +2,14 @@ package com.uvdoha.trelolo;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -50,16 +52,16 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
 
         ListView listView = (ListView) findViewById(R.id.list_view);
 
-        String[] from = new String[] { BoardsTable.COLUMN_NAME, BoardsTable._ID };
-        int[] to = new int[] { R.id.board_title, R.id.board_id };
-        adapter = new SimpleCursorAdapter(BoardsActivity.this,
+        String[] from = new String[] { BoardsTable.COLUMN_NAME, BoardsTable._ID, BoardsTable.COLUMN_CLOSED };
+        int[] to = new int[] { R.id.board_title, R.id.board_id, R.id.board_closed };
+        adapter = new MyCursorAdapter(this,
                 R.layout.board_item,
                 null,
                 from,
                 to,
                 0);
         listView.setAdapter(adapter);
-        getLoaderManager().initLoader(0, null, BoardsActivity.this);
+        getLoaderManager().initLoader(0, null, this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,9 +70,7 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
                 TextView idView = (TextView) view.findViewById(R.id.board_id);
 
                 Intent i = new Intent(BoardsActivity.this, ListsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("id", idView.getText().toString());
-                i.putExtras(bundle);
+                i.putExtra("board_id", idView.getText().toString());
                 startActivity(i);
             }
         });
@@ -78,15 +78,17 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
         Callback callback = new Callback() {
             @Override
             public void onSuccess(Bundle data) {
-
-
+                Log.d("DEBUG", "Get all boards success");
             }
 
             @Override
-            public void onFail(Bundle data) {}
+            public void onFail(Bundle data) {
+                Log.d("DEBUG", "Get all boards fail");
+            }
         };
-
-        ServiceHelper.getInstance(this).getBoards(this, callback);
+        if (savedInstanceState == null) {
+            ServiceHelper.getInstance(this).getBoards(this, callback);
+        }
     }
 
 
@@ -140,5 +142,24 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
         // setting the nav drawer list adapter
         navDrawerListAdapter = new DrawerListAdapter(getApplicationContext(), drawerItems);
         mDrawerList.setAdapter(navDrawerListAdapter);
+    }
+
+    private class MyCursorAdapter extends SimpleCursorAdapter {
+
+        public MyCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
+            super(context, layout, c, from, to, flags);
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            super.bindView(view, context, cursor);
+            TextView textView = (TextView)view.findViewById(R.id.board_closed);
+            if (cursor.getInt(cursor.getColumnIndex(BoardsTable.COLUMN_CLOSED)) == 1) {
+                textView.setText(" (Closed) ");
+            }
+            else {
+                textView.setText(" (Opened) ");
+            }
+        }
     }
 }
