@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -23,15 +24,26 @@ public class LoginActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
-
+        Log.d("login", "activity started");
         mProgressView = findViewById(R.id.login_progress2);
 
         String token = getSharedPreferences("trelolo", MODE_PRIVATE).getString("token", null);
-        if (token == null) {
+
+        if (token == null || !PreferenceManager.getDefaultSharedPreferences(this).getBoolean("cb", false)) {
             showLogin();
         } else {
             showBoards();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WebView view = (WebView) findViewById(R.id.webView);
+        view.clearHistory();
+        view.clearFormData();
+        view.clearCache(true);
+        showLogin();
     }
 
     public void showLogin() {

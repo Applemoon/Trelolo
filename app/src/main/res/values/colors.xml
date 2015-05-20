@@ -4,4 +4,6 @@
     <color name="title_color">#666666</color>
     <color name="begin_gradient">#2A87CE</color>
     <color name="end_gradient">#0E74AF</color>
+    <color name="grey">#333333</color>
+    <color name="white">#f7f7f7</color>
 </resources>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -70,7 +71,7 @@ public class ListsActivity extends Activity implements LoaderManager.LoaderCallb
                 }
             };
 
-            if (savedInstanceState == null) {
+            if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("offline", true)) {
                 ServiceHelper.getInstance(this).getLists(this, board_id, callback);
             }
         }

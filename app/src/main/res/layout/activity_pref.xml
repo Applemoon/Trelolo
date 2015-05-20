@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference android:key="cb"
+        android:title="Оставаться в системе"
+        android:summaryOff="Выходить при закрытии"
+        android:summaryOn="Не выходить при закрытии"></CheckBoxPreference>
+    <CheckBoxPreference android:key="offline"
+        android:title="Работать оффлайн"
+        android:summaryOff="Загружать данные из сети"
+        android:summaryOn="Не загружать данные из сети"></CheckBoxPreference>
+</PreferenceScreen>

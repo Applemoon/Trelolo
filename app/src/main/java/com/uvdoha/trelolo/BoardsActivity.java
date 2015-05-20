@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -90,7 +92,7 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
                         Toast.LENGTH_SHORT).show();
             }
         };
-        if (savedInstanceState == null) {
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("offline", true)) {
             ServiceHelper.getInstance(this).getBoards(this, callback);
         }
     }
@@ -117,9 +119,23 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
     }
 
     private class SlideMenuClickListener implements ListView.OnItemClickListener {
+        final int PREFERENCES_BUTTON = 0;
+        final int LOGOUT_BUTTON = 1;
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // display view for selected nav drawer item
+            Log.d("Left position", String.valueOf(position));
+
+            mDrawerLayout.closeDrawer(mDrawerList);
+
+            switch (position) {
+                case PREFERENCES_BUTTON:
+                    showPreferences();
+                    break;
+                case LOGOUT_BUTTON:
+                    logout();
+                    break;
+            }
         }
     }
 
@@ -165,5 +181,17 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
                 textView.setText(" (Opened) ");
             }
         }
+    }
+
+    private void showPreferences() {
+        Intent intent = new Intent(BoardsActivity.this, PreferencesActivity.class);
+        startActivity(intent);
+    }
+
+    private void logout() {
+        getSharedPreferences("trelolo", MODE_PRIVATE).edit().remove("token").commit();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }

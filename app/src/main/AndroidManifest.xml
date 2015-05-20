@@ -26,6 +26,7 @@
         <activity android:name=".ListsActivity" />
         <activity android:name=".CardsActivity" />
         <activity android:name=".CardViewActivity" />
+        <activity android:name=".PreferencesActivity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -70,7 +71,7 @@ public class CardsActivity extends Activity implements LoaderManager.LoaderCallb
                             Toast.LENGTH_SHORT).show();
                 }
             };
-            if (savedInstanceState == null) {
+            if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("offline", true)) {
                 ServiceHelper.getInstance(this).getCards(this, list_id, callback);
             }
         }
