@@ -23,6 +23,8 @@ public class CardsTable implements BaseColumns {
             COLUMN_LIST_ID
     };
 
+    public static final String SELECT = COLUMN_LIST_ID + " = ?";
+
     public static final String CREATE_TABLE =
             "create table " + TABLE_NAME + " (" +
                     _ID + " text primary key, " +

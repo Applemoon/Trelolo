@@ -23,6 +23,8 @@ public class ListsTable implements BaseColumns {
             COLUMN_BOARD_ID
     };
 
+    public static final String SELECT = COLUMN_BOARD_ID + " = ?";
+
     public static final String CREATE_TABLE =
             "create table " + TABLE_NAME + " (" +
                     _ID + " text primary key, " +
