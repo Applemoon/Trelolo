@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uvdoha.trelolo.data.ListsTable;
 import com.uvdoha.trelolo.utils.Callback;
@@ -56,12 +56,16 @@ public class ListsActivity extends Activity implements LoaderManager.LoaderCallb
         Callback callback = new Callback() {
             @Override
             public void onSuccess(Bundle data) {
-                Log.d("DEBUG", "Get all lists for board_id = " + board_id + " success");
+                Toast.makeText(ListsActivity.this,
+                        R.string.success_lists_download,
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFail(Bundle data) {
-                Log.d("DEBUG", "Get all lists for board_id = " + board_id + " fail");
+                Toast.makeText(ListsActivity.this,
+                        R.string.fail_lists_download,
+                        Toast.LENGTH_SHORT).show();
             }
         };
 

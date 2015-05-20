@@ -3,7 +3,6 @@ package com.uvdoha.trelolo.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 
 // TODO работа со всеми таблицами

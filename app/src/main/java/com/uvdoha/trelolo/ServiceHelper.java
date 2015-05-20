@@ -7,14 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.uvdoha.trelolo.rest.APIHelper;
 import com.uvdoha.trelolo.utils.Callback;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 // Синглтон

@@ -9,12 +9,12 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uvdoha.trelolo.data.BoardsTable;
 import com.uvdoha.trelolo.navigation.DrawerItem;
@@ -78,12 +78,16 @@ public class BoardsActivity extends Activity implements LoaderManager.LoaderCall
         Callback callback = new Callback() {
             @Override
             public void onSuccess(Bundle data) {
-                Log.d("DEBUG", "Get all boards success");
+                Toast.makeText(BoardsActivity.this,
+                        R.string.success_boards_download,
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFail(Bundle data) {
-                Log.d("DEBUG", "Get all boards fail");
+                Toast.makeText(BoardsActivity.this,
+                        R.string.fail_boards_download,
+                        Toast.LENGTH_SHORT).show();
             }
         };
         if (savedInstanceState == null) {

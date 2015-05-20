@@ -50,9 +50,7 @@ public class RESTHandler {
 
         Bundle res = new Bundle();
         try {
-            Log.d("DEBUG", "QUERY IS " + API_PREFIX + method + "?key=" + API_KEY + "&token=" + this.token);
             String result = this.urlConnectionGet(API_PREFIX + method + "?key=" + API_KEY + "&token=" + this.token);
-            Log.d("DEBUG", "RESULT IS " + result);
 
             res.putString("result", result);
             res.putString("error", null);

@@ -6,9 +6,9 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.uvdoha.trelolo.data.CardsTable;
 import com.uvdoha.trelolo.utils.Callback;
@@ -40,12 +40,16 @@ public class CardsActivity extends Activity implements LoaderManager.LoaderCallb
         Callback callback = new Callback() {
             @Override
             public void onSuccess(Bundle data) {
-                Log.d("DEBUG", "Get all cards for list_id = " + list_id + " success");
+                Toast.makeText(CardsActivity.this,
+                        R.string.success_cards_download,
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFail(Bundle data) {
-                Log.d("DEBUG", "Get all cards for list_id = " + list_id + " fail");
+                Toast.makeText(CardsActivity.this,
+                        R.string.fail_cards_download,
+                        Toast.LENGTH_SHORT).show();
             }
         };
         if (savedInstanceState == null) {

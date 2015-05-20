@@ -5,12 +5,10 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.internal.cu;
 import com.uvdoha.trelolo.data.BoardsTable;
 import com.uvdoha.trelolo.data.CardsTable;
 import com.uvdoha.trelolo.data.ListsTable;
@@ -19,9 +17,6 @@ import com.uvdoha.trelolo.utils.Callback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 // Зеркалирует состояние данных на сервере в данные на устройстве
 // Обновляет данные в БД, ставит им статус операции
