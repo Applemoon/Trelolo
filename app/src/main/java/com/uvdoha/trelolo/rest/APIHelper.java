@@ -5,6 +5,6 @@ package com.uvdoha.trelolo.rest;
  */
 public class APIHelper {
     public static String GET_BOARDS_URL = "members/me/boards/";
-    public static String GET_LISTS_URL = "boards/%s/lists"; // %s - board ID
-    public static String GET_CARDS_URL = "lists/%s/cards"; // %s - list ID
+    public static String GET_LISTS_URL = "boards/[0-9a-zA-Z]+/lists";
+    public static String GET_CARDS_URL = "lists/[0-9a-zA-Z]+/cards";
 }

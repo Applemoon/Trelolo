@@ -4,7 +4,9 @@ package com.uvdoha.trelolo;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.util.Log;
+
 import com.uvdoha.trelolo.rest.Processor;
 import com.uvdoha.trelolo.utils.Callback;
 
@@ -25,22 +27,19 @@ public class MyService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "--start service--");
 
-        final Intent cbIntent = new Intent(ServiceHelper.RECEIVER);
-
         Processor processor = new Processor(this, getContentResolver());
+
+        final ResultReceiver rcv = intent.getParcelableExtra("receiver");
 
         processor.request(intent, new Callback() {
             @Override
             public void onSuccess(Bundle data) {
-
-                cbIntent.putExtras(data);
-
-                sendBroadcast(cbIntent);
+                rcv.send(ServiceHelper.RESULT_OK, data);
             }
 
             @Override
             public void onFail(Bundle data) {
-
+                rcv.send(ServiceHelper.RESULT_FAIL, data);
             }
         });
 
