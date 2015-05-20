@@ -110,7 +110,6 @@ public class Processor {
 
     void saveCards(String resultJson) {
         try {
-            Log.d("DEBUG", "RESULTJSON IS " + resultJson);
             JSONArray cardsArrayJsonObj = new JSONArray(resultJson);
             for (int i = 0; i < cardsArrayJsonObj.length(); i++) {
                 JSONObject cardJsonObj = cardsArrayJsonObj.getJSONObject(i);
