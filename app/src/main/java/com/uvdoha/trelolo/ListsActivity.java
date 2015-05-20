@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.uvdoha.trelolo.data.BoardsTable;
 import com.uvdoha.trelolo.data.ListsTable;
+import com.uvdoha.trelolo.utils.Callback;
 
 
 public class ListsActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -52,6 +53,22 @@ public class ListsActivity extends Activity implements LoaderManager.LoaderCallb
                 bundle.putString("id", idView.getText().toString());
                 i.putExtras(bundle);
                 startActivity(i);
+            }
+        });
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String boardId = bundle.getString("id");
+
+        ServiceHelper.getInstance(this).getLists(this, boardId, new Callback() {
+            @Override
+            public void onSuccess(Bundle data) {
+
+            }
+
+            @Override
+            public void onFail(Bundle data) {
+
             }
         });
     }

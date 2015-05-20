@@ -1,6 +1,7 @@
 package com.uvdoha.trelolo.rest;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,14 +30,22 @@ public class RESTHandler {
     static String API_PREFIX = "https://api.trello.com/1/";
 
     private String token;
+    private Context context;
 
-    
+
+    public RESTHandler(Context context) {
+        this.context = context;
+    }
+
     public String processRequest(Bundle data, Callback callback) {
 
         String method = data.getString("method");
 
         if (this.token == null) {
-            this.token = data.getString("token");
+            this.token = context.getSharedPreferences("trelolo", context.MODE_PRIVATE).getString("token", null);
+            if (this.token == null) {
+                //azaz
+            }
         }
 
         Bundle res = new Bundle();

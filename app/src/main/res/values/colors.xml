@@ -2,6 +2,6 @@
 <resources>
     <color name="background">#cccccc</color>
     <color name="title_color">#666666</color>
-    <color name="begin_gradient">#3A97DE</color>
+    <color name="begin_gradient">#2A87CE</color>
     <color name="end_gradient">#0E74AF</color>
 </resources>

@@ -26,6 +26,16 @@ public class LoginActivity extends Activity {
 
         mProgressView = findViewById(R.id.login_progress2);
 
+        String token = getSharedPreferences("trelolo", MODE_PRIVATE).getString("token", null);
+        if (token == null) {
+            showLogin();
+        } else {
+            showBoards();
+        }
+    }
+
+    public void showLogin() {
+
         WebView view = (WebView) findViewById(R.id.webView);
         view.requestFocus(View.FOCUS_DOWN);
         view.setVisibility(View.INVISIBLE);
@@ -69,6 +79,11 @@ public class LoginActivity extends Activity {
         }
     }
 
+    public void showBoards() {
+        Intent intent = new Intent(LoginActivity.this, BoardsActivity.class);
+        startActivity(intent);
+    }
+
     class MyJavaScriptInterface
     {
         @JavascriptInterface
@@ -79,13 +94,9 @@ public class LoginActivity extends Activity {
 
             token = token.replace("\n", "").replace(" ", "");
 
-            Bundle tokenBundle = new Bundle();
-            tokenBundle.putString("token", token);
+            getSharedPreferences("trelolo", MODE_PRIVATE).edit().putString("token", token).commit();
 
-            Intent intent = new Intent(LoginActivity.this, BoardsActivity.class);
-            intent.putExtras(tokenBundle);
-
-            startActivity(intent);
+            showBoards();
         }
     }
 
