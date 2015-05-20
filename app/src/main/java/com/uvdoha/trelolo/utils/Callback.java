@@ -8,7 +8,6 @@ import android.os.Bundle;
 public abstract class Callback {
 
     public Callback() {}
-
     public abstract void onSuccess(Bundle data);
     public abstract void onFail(Bundle data);
     public void onDone(Bundle data) {}

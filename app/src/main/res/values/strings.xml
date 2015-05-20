@@ -8,4 +8,13 @@
         <item>Супердоски</item>
         <item>Выйти</item>
     </string-array>
+
+    <string name="success_cards_download">Список карт успешно обновлён</string>
+    <string name="fail_cards_download">"Во время обновления списка карт произошла ошибка"</string>
+
+    <string name="success_boards_download">Список досок успешно обновлён</string>
+    <string name="fail_boards_download">"Во время обновления списка досок произошла ошибка"</string>
+
+    <string name="success_lists_download">Список листов успешно обновлён</string>
+    <string name="fail_lists_download">"Во время обновления списка листов произошла ошибка"</string>
 </resources>
